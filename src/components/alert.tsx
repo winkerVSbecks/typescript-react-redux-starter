@@ -1,41 +1,35 @@
 import * as React from 'react';
-const objectAssign = require('object-assign');
+import classNames from 'classnames';
 
-interface IAlertProps extends React.Props<any> {
-  isVisible: boolean;
-  style?: Object;
-  status?: string;
-  className?: string;
-};
-
-const componentColor = {
+const statusClasses = {
   info: 'bg-blue white',
   warning: 'bg-yellow black',
   success: 'bg-green black',
   error: 'bg-red white',
 };
 
+interface IAlertProps extends React.Props<any> {
+  isVisible: boolean;
+  status?: string;
+};
+
 const Alert = ({
   children = null,
   isVisible,
   status = 'info',
-  className = '',
-  style = {}
 }: IAlertProps) => {
-  const visibleClass = isVisible ? 'block' : 'hide';
+  const alertClasses = classNames(['p2', 'bold'], {
+    block: isVisible,
+    hide: !isVisible,
+    [statusClasses[status]]: true,
+  });
 
   return (
     <div
-      className={ `${ className } p2 bold ${ visibleClass }
-                   ${ componentColor[status] || 'info' }` }
-      style={ objectAssign({}, styles.base, style) }>
+      className={ alertClasses }>
       { children }
     </div>
   );
-};
-
-const styles = {
-  base: {},
 };
 
 export default Alert;
